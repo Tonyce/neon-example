@@ -1,22 +1,35 @@
 const addon = require('./index.node');
+const { promisify } = require("util");
+const rayon_pool_task = promisify(addon.rayon_pool_task);
 // const wasmFib = require('wasm-fibonacci');
-const { hrtime } = require('process');
 
 // addon.start_task(function(...args) {
 //     console.log(args)
-// });
+// // });
+// const x = Error('I was created using a function call!');
+// console.log( x)
+// setTimeout(() => {
+    
+// }, 10000);
 
-// var start = Date.now();
-// addon.rayon_pool_task(45, function(...args) {
-//     console.log(args)
-//     console.log(Date.now() - start)
-// });
+// rayon_pool_task(5).then(console.log).catch(err => {
+//     console.log(err)
+//     console.log(typeof err)
+//     console.log(err.message)
+//     console.log(err.stack)
+// })
+
+// // var start = Date.now();
+addon.rayon_pool_task(5, function(err, r) {
+    console.log(new Error(err.message), r)
+    // console.log(Date.now() - start)
+});
 
 // setInterval(() => {
 //     console.log("---=-=-=")
 // }, 1000);
 
-console.log(addon.max_num());
+// console.log(addon.max_num());
 
 // 可粗略计算 eventloop time
 // (function im(){

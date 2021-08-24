@@ -5,7 +5,7 @@
   "main": "index.node",
   "scripts": {
     "build": "rm -f index.node && cargo-cp-artifact -nc index.node -- cargo build --message-format=json-render-diagnostics",
-    "install": "npm run build",
+    "//install": "npm run build",
     "test": "cargo test"
   },
   "author": "",
@@ -14,6 +14,9 @@
     "cargo-cp-artifact": "^0.1"
   },
   "dependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
+    "@jsrsc/hellojs": "^1.0.0",
+    "@jsrsc/hellorust": "^0.1.8",
     "express": "^4.17.1",
     "wasm-fibonacci": "^0.1.0"
   }

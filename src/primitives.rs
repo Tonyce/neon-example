@@ -29,3 +29,8 @@ pub fn max_num(mut cx: FunctionContext) -> JsResult<JsNumber> {
     let num: f64 = 19007199254740992_f64;
     Ok(cx.number(num))
 }
+
+pub fn err_gen(mut cx: FunctionContext) -> JsResult<JsError> {
+    // JsError::error(&mut cx, "fsd")
+    cx.error("msg")
+}

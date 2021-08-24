@@ -28,19 +28,35 @@ pub fn rayon_pool_task(mut cx: FunctionContext) -> JsResult<JsUndefined> {
     let num = cx.argument::<JsNumber>(0)?.value(&mut cx);
     let callback = cx.argument::<JsFunction>(1)?.root(&mut cx);
     let queue = cx.channel();
+    // println!("-- {}", THREAD_POOL.current_num_threads());
     // let result = THREAD_POOL.(|| fib(45));
     // let pool = THREAD_POOL.lock().unwrap();
-    rayon::spawn(move || {
+    std::thread::spawn(move || {
+        // rayon::spawn(move || {
         let result = fib(num as _);
         // std::thread::spawn(move || {
         queue.send(move |mut cx| {
             let callback = callback.into_inner(&mut cx);
             let this = cx.undefined();
+            // let err = JsError::error(&mut cx, "fsd")?;
 
             let args = vec![
+                cx.null().upcast::<JsValue>(),
                 cx.number(result as f64).upcast::<JsValue>(),
-                // cx.null().upcast::<JsValue>(),
             ];
+            let args = vec![
+                cx.error("msg")?.upcast(),
+                // err.as_value(&mut cx),
+                // err.upcast::<JsValue>(),
+                cx.null().upcast::<JsValue>(),
+            ];
+            // let args: Vec<Handle<JsValue>> = match result {
+            //     Ok(id) => vec![cx.null().upcast(), cx.number(id as f64).upcast()],
+            //     Err(err) => vec![cx.error(err.to_string())?.upcast()],
+            // };
+
+            // let args = cx.error("msg")?;
+
             callback.call(&mut cx, this, args)?;
             Ok(())
         });

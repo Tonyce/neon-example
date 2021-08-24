@@ -1,4 +1,5 @@
 // use image::EncodableLayout;
+use crate::THREAD_POOL;
 use image::DynamicImage;
 use neon::prelude::*;
 
@@ -18,7 +19,8 @@ pub fn rayon_image_gen(mut cx: FunctionContext) -> JsResult<JsUndefined> {
     let callback = cx.argument::<JsFunction>(1)?.root(&mut cx);
     let queue = cx.channel();
 
-    rayon::spawn(move || {
+    THREAD_POOL.install(move || {
+        // rayon::spawn(move || {
         let image_buf = image_buf(imgx as _, imgy as _);
         // std::thread::spawn(move || {
         queue.send(move |mut cx| {

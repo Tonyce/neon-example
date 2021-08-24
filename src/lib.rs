@@ -16,7 +16,7 @@ use neon::prelude::*;
 lazy_static! {
     static ref EXAMPLE: u8 = 42;
 //     // static ref THREAD_POOL: Arc<ThreadPool> = init_thread_pool();
-//     static ref THREAD_POOL: rayon::ThreadPool = init_pool();
+    static ref THREAD_POOL: rayon::ThreadPool = init_pool();
 }
 
 // fn init_thread_pool() -> Arc<ThreadPool> {
@@ -26,7 +26,7 @@ lazy_static! {
 
 fn init_pool() -> rayon::ThreadPool {
     rayon::ThreadPoolBuilder::new()
-        .num_threads(8)
+        .num_threads(4)
         .build()
         .unwrap()
     // ThreadPool::new(8)
@@ -35,7 +35,7 @@ fn init_pool() -> rayon::ThreadPool {
 #[neon::main]
 fn main(mut cx: ModuleContext) -> NeonResult<()> {
     // let pool = init_thread_pool();
-    let _ = init_pool();
+    // let _ = init_pool();
     cx.export_function(
         "pool_task",
         move |mut cx: FunctionContext| -> JsResult<JsString> { Ok(cx.string("hello node")) },
@@ -46,6 +46,7 @@ fn main(mut cx: ModuleContext) -> NeonResult<()> {
     cx.export_function("numbers", primitives::numbers)?;
     cx.export_function("booleans", primitives::booleans)?;
     cx.export_function("undefined", primitives::undefined)?;
+    cx.export_function("err_gen", primitives::err_gen)?;
     cx.export_function("null", primitives::null)?;
     cx.export_function("get", primitives::get_num_cpus)?;
 
